@@ -1,0 +1,123 @@
+<html>
+<head>
+
+	<title>API Example</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+	#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  z-index: 99;
+  font-size: 18px;
+  border: none;
+  outline: none;
+  background-color: #222;
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 44px;
+}
+
+#myBtn:hover {
+  background-color: #555;
+}
+	</style>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+	
+		var accessToken = "ya29.Il-9B3HFIV8a5GtAfWyGvCNKxH3fqTPEqZrLZzctbUU-xF5ubHfo3iAIHXlgQ_WgX2Zysm6QE0K3eTMhGgtboLezkeE3aua6Aao7BuI-luGKIyYN9qjSLaG6Vxm1bumoUQ";
+		var baseUrl = "https://content-dialogflow.googleapis.com/v2/projects/poc-wxmtul/agent/sessions/11123:detectIntent?%24.xgafv=1&alt=json&access_token=e629779c2c1e4e9aaa5e5526c091ad6d";
+		$(document).ready(function() {
+			$("#input").keypress(function(event) {
+				if (event.which == 13) {
+					$('.chatBox').append('<span class="userInput">' + 'me:'+ $('input').val() + '</span><br><br>')
+					event.preventDefault();
+					let query  = $('input').val()
+					$('input').val('') 
+					send(query);
+				}
+			});
+		});
+		$(document).ready(function() {
+			$("#myaBtn").click(function() {
+				if($('input').val()=='')
+				{
+					alert("please enter your Query!");
+				}
+				else{
+					$('.chatBox').append('<span class="userInput">' + 'me:'+ $('input').val() + '</span><br><br>')
+					let query  = $('input').val()
+					$('input').val('') 
+					send(query);
+				}
+			});
+		});
+
+
+
+
+	
+		function send(query) {
+			var text = query;
+			$.ajax({
+				type: "POST",
+				url: baseUrl,
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				headers: {
+					"Authorization": "Bearer " + accessToken
+				},
+				data: JSON.stringify({"queryInput":{"text":{"text":""+text+"","languageCode":"en"}}}),
+				success: function(data) {
+					setResponse(data);
+				}
+			});
+		}
+		function setResponse(val) {
+			console.log(String(val).includes("payload"))
+			console.log(String(val))
+			console.log(JSON.stringify(val))
+			if(val!=''&& JSON.stringify(val).includes("payload"))
+			{
+				$("#input").hide();
+			}
+
+			else $("#input").show();
+			$(".chatBox").append('<span class="responseData">'+ 'bot:' + val.queryResult.fulfillmentText + '</span><br><br>');
+			//alert(val.queryResult.fulfillmentMessages)
+			$(".chatBox").append('<span class="responseData"><input type="button" id="myaBtn"  value="' + val.queryResult.fulfillmentMessages[2].payload.quickReplies.quickReplies[0] + '"></input></span><br>');
+		}
+	</script>
+	<style type="text/css">
+		body { width: 500px; margin: 0 auto;height: 500px; border: 2px solid black;padding: 10px;	 }
+		div { width: 400px;height: 450px;overflow: auto	 }
+		.userInput{float: left;}
+		.responseData{float:right};
+		#input { width: 500px; }
+		button { width: 50px; }
+	</style>
+</head>
+<body>
+	<div class = 'chatBox'>
+	</div>
+	
+	<input id="input" type="text" style="width: 430px;"> 
+	<button type="button"  id="myaBtn" value="hi"  >Send</button>
+	
+	<script>function hide(){
+		
+  var x = document.getElementById("myaBtn");
+  if (x.innerHTML.val === "Hello") {
+    x.innerHTML.val = alert("Swapped text!");
+  } else {
+    x.innerHTML.val = "Send";
+	x.id = "myaBtn";
+//	x.value = document.getElementById("input").val;
+  }
+
+	}</script>
+  https://github.com/dialogflow/dialogflow-fulfillment-nodejs/issues/267
+</body>
+</html>
