@@ -1,8 +1,31 @@
 <html>
 <head>
 
-	<title>API Example</title>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>SLK ChatBot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style> 
+        input[type=text] {
+          width: 100%;
+          padding: 12px 10px;
+          margin: 4px 0;
+          box-sizing: border-box;
+          border: 3px solid #ccc;
+          -webkit-transition: 0.5s;
+          transition: 0.5s;
+          outline: none;
+        }
+        
+        input[type=text]:focus {
+          border: 3px solid #555;
+          text-decoration:beige;
+        }
+
+        #sUserInput {
+ background-color: rgb(94, 12, 201);
+ color:beige;
+
+}
+        </style>
 	<style>
 	#myBtn {
   display: none;
@@ -27,12 +50,12 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 	<script type="text/javascript">
 	
-		var accessToken = "ya29.Il-9B3HFIV8a5GtAfWyGvCNKxH3fqTPEqZrLZzctbUU-xF5ubHfo3iAIHXlgQ_WgX2Zysm6QE0K3eTMhGgtboLezkeE3aua6Aao7BuI-luGKIyYN9qjSLaG6Vxm1bumoUQ";
+		var accessToken = "ya29.Il-9B3B_ParIANzZVJX0c0HS8qZV7AfXbR7SZ34stNiw1UJIU-MB8PB7NjEeRsAaY2L2MkXX9w5E8MxB30bDlmX49jOcHSDnW0B-V0h_8NpWId5eeBWSo3Kd75FoBLYr0Q";
 		var baseUrl = "https://content-dialogflow.googleapis.com/v2/projects/poc-wxmtul/agent/sessions/11123:detectIntent?%24.xgafv=1&alt=json&access_token=e629779c2c1e4e9aaa5e5526c091ad6d";
 		$(document).ready(function() {
 			$("#input").keypress(function(event) {
 				if (event.which == 13) {
-					$('.chatBox').append('<span class="userInput">' + 'me:'+ $('input').val() + '</span><br><br>')
+					$('.chatBox').append('<span id="sUserInput" class="userInput">' + 'me:'+ $('input').val() + '</span><br><br>')
 					event.preventDefault();
 					let query  = $('input').val()
 					$('input').val('') 
@@ -47,7 +70,7 @@
 					alert("please enter your Query!");
 				}
 				else{
-					$('.chatBox').append('<span class="userInput">' + 'me:'+ $('input').val() + '</span><br><br>')
+					$('.chatBox').append('<span id="sUserInput" class="userInput">' + 'me:'+ $('input').val() + '</span><br><br>')
 					let query  = $('input').val()
 					$('input').val('') 
 					send(query);
@@ -76,9 +99,11 @@
 			});
 		}
 		function setResponse(val) {
-			console.log(String(val).includes("payload"))
-			console.log(String(val))
-			console.log(JSON.stringify(val))
+//console.log(String(val).includes("payload"))
+		//	console.log(String(val))
+			//console.log(JSON.stringify(val))
+            var count = Object.keys(val).length;
+  console.log(count);
 			if(val!=''&& JSON.stringify(val).includes("payload"))
 			{
 				$("#input").hide();
@@ -118,6 +143,6 @@
   }
 
 	}</script>
-  https://github.com/dialogflow/dialogflow-fulfillment-nodejs/issues/267
+ 
 </body>
 </html>
